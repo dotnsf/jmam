@@ -1,0 +1,22 @@
+{
+    "name": "jmam",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "@cloudant/cloudant": "^3.0.1",
+        "body-parser": "1.17.x",
+        "cfenv": "~1.0.0",
+        "cheerio-httpcli": "^0.7.3",
+        "ejs": "^2.6.1",
+        "express": "4.1.x",
+        "fs": "~0.0.1",
+        "mecab-async": "0.1.2",
+        "word2vec": "1.1.4"
+    },
+    "repository": {},
+    "engines": {
+        "node": "8.x"
+    }
+}

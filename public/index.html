@@ -26,7 +26,7 @@ function retrieve(){
       if( text.status && text.result ){
         var data = { body: text.result };
         $.ajax({
-          url: '/mecab',
+          url: '/mecabParse',
           type: 'POST',
           data: data,
           success: function( result ){
@@ -56,6 +56,64 @@ function retrieve(){
     }
   });
 }
+
+function prepareW2V(){
+  var url = $('#url').val();
+  console.log( 'retrieve: url = ' + url );
+  $.ajax({
+    url: '/loadTextByUrl?url=' + url,
+    type: 'GET',
+    success: function( text ){
+      if( text.status && text.result ){
+        var data = { body: text.result };
+        $.ajax({
+          url: '/mecabPrepareW2V',
+          type: 'POST',
+          data: data,
+          success: function( result ){
+            //console.log( result );
+            if( result.status && result.result ){
+              console.log( result.result );
+              var text = result.result;
+              $.ajax({
+                url: '/w2v',
+                type: 'POST',
+                data: { body: text },
+                success: function( model ){
+                  console.log( model );
+                  if( model.status && model.model_id ){
+                    $.ajax({
+                      url: '/similar',
+                      type: 'POST',
+                      data: { model_id: model.model_id, word: 'ラズベリーパイ' },
+                      success: function( result ){
+                        console.log( result );
+                      },
+                      error: function( err ){
+                        console.log( 'POST /similar : error' );
+                        console.log( err );
+                      }
+                    });
+                  }
+                },
+                error: function( err ){
+                  console.log( 'POST /w2v : error' );
+                  console.log( err );
+                }
+              });
+            }
+          },
+          error: function( err ){
+            console.log( err );
+          }
+        });
+      }
+    },
+    error: function( err ){
+      console.log( err );
+    }
+  });
+}
 </script>
 </head>
 <body>
@@ -69,7 +127,9 @@ function retrieve(){
 </div>
 
 <div class="container">
-URL: <input type="text" id="url" value=""/><input type="button" class="btn btn-primary" value="retrieve" onClick="retrieve();"/>
+URL: <input type="text" id="url" value=""/>
+<input type="button" class="btn btn-primary" value="retrieve" onClick="retrieve();"/>
+<input type="button" class="btn btn-primary" value="prepareW2V" onClick="prepareW2V();"/>
 </div>
 
 </body>

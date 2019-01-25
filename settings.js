@@ -2,6 +2,7 @@ exports.db_username = '';
 exports.db_password = '';
 exports.db_name = 'jmam';
 
+exports.max_letters = 5000;
 exports.app_port = 0;
 
 if( process.env.VCAP_SERVICES ){
